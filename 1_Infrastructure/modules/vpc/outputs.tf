@@ -37,3 +37,23 @@ output "firewall_rule_id" {
   description = "The ID of the IAP firewall rule"
   value       = google_compute_firewall.allow_iap.id
 }
+
+output "backup_subnet_id" {
+  description = "The ID of the subnetwork"
+  value       = google_compute_subnetwork.backup_subnet.id
+}
+
+output "backup_subnet_name" {
+  description = "The name of the subnetwork"
+  value       = google_compute_subnetwork.backup_subnet.name
+}
+
+output "sbackup_ubnet_self_link" {
+  description = "The URI of the subnetwork"
+  value       = google_compute_subnetwork.backup_subnet.self_link
+}
+
+output "backup_subnet_cidr" {
+  description = "The CIDR range of the subnetwork"
+  value       = google_compute_subnetwork.backup_subnet.ip_cidr_range
+}

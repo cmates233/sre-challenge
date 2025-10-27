@@ -19,3 +19,19 @@ variable "region" {
   type        = string
 }
 
+variable "backup_subnetwork_name" {
+  description = "Name of the subnetwork"
+  type        = string
+}
+
+variable "backup_subnet_cidr" {
+  description = "CIDR range for the subnetwork"
+  type        = string
+  default     = "10.3.0.0/16"
+}
+
+variable "backup_region" {
+  description = "GCP region for the subnetwork"
+  type        = string
+}
+
