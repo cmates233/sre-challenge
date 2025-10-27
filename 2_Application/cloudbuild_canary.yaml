@@ -1,0 +1,64 @@
+# cloudbuild.yaml
+steps:
+  # 1. Build the Go application binary.
+
+  - name: 'gcr.io/cloud-builders/go'
+    args: ['build', '-o', 'app', '-ldflags', '-w -s', '.']
+    env: ['CGO_ENABLED=0', 'GOOS=linux', 'PROJECT_ROOT=workspace']
+    id: 'Build Go App'
+
+  # 2. Build the Docker image.
+  # The image is tagged with the short commit SHA for versioning.
+  # We run this in '2_Application' to find the Dockerfile and the 'app' binary.
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - '${_GKE_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_GAR_REPO_NAME}/${_SERVICE_NAME}'
+      - '.'
+    id: 'Build Docker Image'
+
+  # 3. Push the Docker image to Google Artifact Registry.
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - '${_GKE_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_GAR_REPO_NAME}/${_SERVICE_NAME}'
+    id: 'Push Docker Image'
+
+  # 4. Get GKE credentials.
+  # This step allows kubectl to connect to your private cluster.
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'container'
+      - 'clusters'
+      - 'get-credentials'
+      - '${_GKE_CLUSTER}'
+      - '--region'
+      - '${_GKE_LOCATION}'
+    id: 'Get GKE Credentials'
+
+  # 5. Deploy to GKE.
+  # This uses kubectl to update the image of our existing deployment.
+  # Using `kubectl set image` is a clean way to update the image without
+  # needing to modify the YAML file directly.
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: kubectl
+    args:
+      - 'set'
+      - 'image'
+      - 'deployment/${_SERVICE_NAME}'
+      - '${_SERVICE_NAME}=${_GKE_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_GAR_REPO_NAME}/${_SERVICE_NAME}'
+    id: 'Deploy to GKE'
+
+# List of images to be pushed to the registry.
+images:
+  - '${_GKE_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_GAR_REPO_NAME}/${_SERVICE_NAME}'
+
+# Define substitutions that can be passed to the build.
+# These can be set in your Cloud Build trigger.
+substitutions:
+  _GKE_CLUSTER: 'primary-cluster'
+  _GKE_LOCATION: 'europe-west1'
+  _GAR_REPO_NAME: 'my-app-repo'
+  _SERVICE_NAME: 'my-go-app'
