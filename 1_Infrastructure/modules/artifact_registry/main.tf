@@ -7,6 +7,7 @@ resource "google_artifact_registry_repository" "proxy" {
   mode          = "REMOTE_REPOSITORY"
 
   remote_repository_config {
+    
     description                 = var.description
     disable_upstream_validation = var.disable_upstream_validation
 
@@ -20,9 +21,6 @@ resource "google_artifact_registry_repository" "proxy" {
 
       public_repository = var.repository_type == "public" ? var.public_repository : null
     }
-  }
-
-  vulnerability_scanning_config {
-    enablement_config = var.vulnerability_scanning_enablement
+    
   }
 }
