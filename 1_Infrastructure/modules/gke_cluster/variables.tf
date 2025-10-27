@@ -64,7 +64,6 @@ variable "enable_private_endpoint" {
 variable "master_ipv4_cidr_block" {
   description = "CIDR block for the master network"
   type        = string
-  default     = "172.16.0.0/28"
 }
 
 variable "enable_workload_identity" {

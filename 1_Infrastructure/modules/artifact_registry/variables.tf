@@ -1,16 +1,15 @@
 variable "project_id" {
-  description = "The GCP project ID"
+  description = "GCP project ID"
   type        = string
 }
 variable "format" {
-  description = "The repo format"
+  description = "repo format"
   type        = string
 }
 
 variable "location" {
-  description = "The location for the repository"
+  description = "Location for the repository"
   type        = string
-  default     = "europe-southwest1"
 }
 
 variable "repository_id" {
@@ -49,10 +48,4 @@ variable "disable_upstream_validation" {
   description = "Whether to disable upstream validation"
   type        = bool
   default     = false
-}
-
-variable "vulnerability_scanning_enablement" {
-  description = "Vulnerability scanning configuration"
-  type        = string
-  default     = "INHERITED"
 }
