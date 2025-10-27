@@ -54,5 +54,5 @@ output "grafana_secret_id" {
 
    output "loadbalancer_ip_primary" {
   value       = kubernetes_service.my_go_app_service_primary.status.0.load_balancer.0.ingress.0.ip
-  description = "The external IP address of the LoadBalancer"
+
 }

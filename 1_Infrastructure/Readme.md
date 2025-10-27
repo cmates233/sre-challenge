@@ -30,6 +30,7 @@ In regards with the monitoring stack, I'll use Grafana + Prometheus, both instal
 
 In regards of the kind of GKE cluster selected, I've chosen the standard type, as it allows a faster scale up on both the primary and the backup cluster, although, should it be cost-prohibitive, an autopilot cluster on the backup side would save some budget when scaled to 0, since it's pay per resources consumed.
 
+(See the sample terraform.tfvars for ease of use).
 ### Alternative designs
 
 I'd like to throw some ideas on how we could do different architectures:

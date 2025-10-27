@@ -56,7 +56,7 @@ configmapReload:
     ## configmap-reload container image
     ##
     image:
-      repository: {region}.pkg.dev/${project_id}/prometheus-operator/prometheus-config-reloader
+      repository: "{region}.pkg.dev/${project_id}/prometheus-operator/prometheus-config-reloader"
       tag: v0.86.1
       # When digest is set to a non-empty value, images will be pulled by digest (regardless of tag value).
       digest: ""

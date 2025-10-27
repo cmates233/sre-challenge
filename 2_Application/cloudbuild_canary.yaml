@@ -8,8 +8,7 @@ steps:
     id: 'Build Go App'
 
   # 2. Build the Docker image.
-  # The image is tagged with the short commit SHA for versioning.
-  # We run this in '2_Application' to find the Dockerfile and the 'app' binary.
+
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
@@ -19,6 +18,7 @@ steps:
     id: 'Build Docker Image'
 
   # 3. Push the Docker image to Google Artifact Registry.
+
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
@@ -26,7 +26,7 @@ steps:
     id: 'Push Docker Image'
 
   # 4. Get GKE credentials.
-  # This step allows kubectl to connect to your private cluster.
+
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args:
@@ -39,9 +39,7 @@ steps:
     id: 'Get GKE Credentials'
 
   # 5. Deploy to GKE.
-  # This uses kubectl to update the image of our existing deployment.
-  # Using `kubectl set image` is a clean way to update the image without
-  # needing to modify the YAML file directly.
+
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: kubectl
     args:
@@ -55,10 +53,9 @@ steps:
 images:
   - '${_GKE_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_GAR_REPO_NAME}/${_SERVICE_NAME}'
 
-# Define substitutions that can be passed to the build.
-# These can be set in your Cloud Build trigger.
+# Substitutions for variables
 substitutions:
   _GKE_CLUSTER: 'primary-cluster'
-  _GKE_LOCATION: 'europe-west1'
-  _GAR_REPO_NAME: 'my-app-repo'
-  _SERVICE_NAME: 'my-go-app'
+  _GKE_LOCATION: 'europe-southwest1'
+  _GAR_REPO_NAME: 'my-app-repo-canary'
+  _SERVICE_NAME: 'my-go-app-canary'

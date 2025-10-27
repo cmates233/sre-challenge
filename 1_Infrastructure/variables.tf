@@ -37,3 +37,7 @@ variable "cluster_release_channel" {
 variable "backup_cluster_primary_range" {
   type        = string
 }
+
+variable "dns_domain" {
+  type        = string
+}
