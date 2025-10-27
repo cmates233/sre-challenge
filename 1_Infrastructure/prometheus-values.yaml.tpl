@@ -1,0 +1,1 @@
+image: europe-southwest1-docker.pkg.dev/${project_id}/quay-proxy/prometheus-operator/prometheus-config-reloader
